@@ -38,10 +38,11 @@ class RemoteVideoLoaderTests: XCTestCase {
     func test_load_deliversErrorOnClientError() {
         let (sut, client) = makeSUT()
         client.error = NSError(domain: "teest", code: 0)
-        var caprutedError: RemoteVideoLoader.Error?
-        sut.load { error in caprutedError = error }
         
-        XCTAssertEqual(caprutedError, .connectivity)
+        var caprutedErrors = [RemoteVideoLoader.Error]()
+        sut.load { caprutedErrors.append($0) }
+        
+        XCTAssertEqual(caprutedErrors, [.connectivity])
     }
     
     
