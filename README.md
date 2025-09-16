@@ -39,6 +39,7 @@ Given the learner has connectivity
 
 
 # Flowchart
+![Flow Chart](flow_chart.png)
 
 # Model Specs
 
