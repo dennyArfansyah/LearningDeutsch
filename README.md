@@ -1,4 +1,4 @@
-# LearningDeutsch
+# Learning Deutsch
 
 ### Story: Learners requests to see list of video's thumbnail
 
