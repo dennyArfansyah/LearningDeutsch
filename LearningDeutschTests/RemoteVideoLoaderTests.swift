@@ -9,28 +9,37 @@ import XCTest
 
 class RemoteVideoLoader {
     func load() {
-        HTTPClient.shared.requestURL = URL(string: "https://a-url.com")!
+        HTTPClient.shared.get(from: URL(string: "https://a-url.com")!)
     }
 }
 
 class HTTPClient {
-    static let shared = HTTPClient()
+    static var shared = HTTPClient()
     
-    var requestURL: URL?
+    func get(from url: URL) {}
 }
 
+class HTTPClientSpy: HTTPClient {
+    var requestURL: URL?
+    
+    override func get(from url: URL) {
+        requestURL = url
+    }
+}
 
 class RemoteVideoLoaderTests: XCTestCase {
     
     func test_init_doestNotRequestDataFromURL() {
-        let client = HTTPClient.shared
+        let client = HTTPClientSpy()
+        HTTPClient.shared = client
         _ = RemoteVideoLoader()
         
         XCTAssertNil(client.requestURL)
     }
     
     func test_load_requestDataFromURL() {
-        let client = HTTPClient.shared
+        let client = HTTPClientSpy()
+        HTTPClient.shared = client
         let sut = RemoteVideoLoader()
         
         sut.load()
