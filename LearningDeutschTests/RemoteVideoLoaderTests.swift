@@ -7,9 +7,15 @@
 
 import XCTest
 
-class RemoteVideoLoader {}
+class RemoteVideoLoader {
+    func load() {
+        HTTPClient.shared.requestURL = URL(string: "https://a-url.com")!
+    }
+}
 
 class HTTPClient {
+    static let shared = HTTPClient()
+    
     var requestURL: URL?
 }
 
@@ -17,10 +23,18 @@ class HTTPClient {
 class RemoteVideoLoaderTests: XCTestCase {
     
     func test_init_doestNotRequestDataFromURL() {
-        let client = HTTPClient()
+        let client = HTTPClient.shared
         _ = RemoteVideoLoader()
         
         XCTAssertNil(client.requestURL)
     }
     
+    func test_load_requestDataFromURL() {
+        let client = HTTPClient.shared
+        let sut = RemoteVideoLoader()
+        
+        sut.load()
+        
+        XCTAssertNotNil(client.requestURL)
+    }
 }
