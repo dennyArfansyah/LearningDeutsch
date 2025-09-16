@@ -50,12 +50,15 @@ class RemoteVideoLoaderTests: XCTestCase {
     func test_load_deliversErrorOnNon200HTTPResponse() {
         let (sut, client) = makeSUT()
         
-        var caprutedErrors = [RemoteVideoLoader.Error]()
-        sut.load { caprutedErrors.append($0) }
-        
-        client.complete(withStatusCode: 400)
-        
-        XCTAssertEqual(caprutedErrors, [.invalidData])
+        let samples = [199, 200, 300, 400, 500]
+        samples.enumerated().forEach { index, code in
+            
+            var caprutedErrors = [RemoteVideoLoader.Error]()
+            sut.load { caprutedErrors.append($0) }
+            
+            client.complete(withStatusCode: code, at: index)
+            XCTAssertEqual(caprutedErrors, [.invalidData])
+        }
     }
     
     
