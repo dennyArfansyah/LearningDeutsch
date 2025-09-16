@@ -1,4 +1,4 @@
-# LearningDeutsch
+# Learning Deutsch
 
 ### Story: Learners requests to see list of video's thumbnail
 
@@ -39,6 +39,7 @@ Given the learner has connectivity
 
 
 # Flowchart
+![Flow Chart](flow_chart.png)
 
 # Model Specs
 
