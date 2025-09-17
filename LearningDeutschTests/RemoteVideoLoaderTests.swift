@@ -7,6 +7,7 @@
 
 import LearningDeutsch
 import XCTest
+import Testing
 
 class RemoteVideoLoaderTests: XCTestCase {
     
@@ -70,7 +71,7 @@ class RemoteVideoLoaderTests: XCTestCase {
         let (sut, client) = makeSUT()
      
         expect(sut, toCompleteWithResult: .success([]), when: {
-            let emptyListJSON = Data(bytes: "{\"items\": []}".utf8)
+            let emptyListJSON = makeItemsJSON([])
             client.complete(withStatusCode: 200, data: emptyListJSON)
         })
     }
