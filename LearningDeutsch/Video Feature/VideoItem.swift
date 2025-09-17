@@ -8,9 +8,24 @@
 import Foundation
 
 public struct VideoItem: Equatable {
-    let id: UUID
-    let title: String
-    let description: String?
-    let thumbnailURL: URL
-    let videoURL: URL
+    public let id: UUID
+    public let description: String?
+    public let location: String?
+    public let imageURL: URL
+    
+    public init(id: UUID, description: String?, location: String?, imageURL: URL) {
+        self.id = id
+        self.description = description
+        self.location = location
+        self.imageURL = imageURL
+    }
+}
+
+extension VideoItem: Decodable {
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case description
+        case location
+        case imageURL = "image"
+    }
 }
