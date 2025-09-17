@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct VideoItem {
+public struct VideoItem: Equatable {
     let id: UUID
     let title: String
     let description: String?

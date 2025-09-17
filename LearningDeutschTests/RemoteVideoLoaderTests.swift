@@ -37,7 +37,7 @@ class RemoteVideoLoaderTests: XCTestCase {
     
     func test_load_deliversErrorOnClientError() {
         let (sut, client) = makeSUT()
-
+        
         expect(sut, toCompleteWithError: .connectivity, when: {
             let clientError = NSError(domain: "Test", code: 0)
             client.complete(with: clientError)
@@ -79,11 +79,12 @@ class RemoteVideoLoaderTests: XCTestCase {
                         when action: () -> Void,
                         file: StaticString = #filePath,
                         line: UInt = #line) {
-        var caprutedErrors = [RemoteVideoLoader.Error]()
-        sut.load { caprutedErrors.append($0) }
+        var caprutedResults = [RemoteVideoLoader.Result]()
+        sut.load { caprutedResults.append($0) }
         
         action()
-        XCTAssertEqual(caprutedErrors, [error], file: file, line: line)
+        
+        XCTAssertEqual(caprutedResults, [.failure(error)], file: file, line: line)
     }
     
     private class HTTPClientSpy: HTTPClient {
