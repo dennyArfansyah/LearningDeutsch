@@ -52,13 +52,24 @@ class RemoteVideoLoaderTests: XCTestCase {
         
         let samples = [199, 200, 300, 400, 500]
         samples.enumerated().forEach { index, code in
-            
             var caprutedErrors = [RemoteVideoLoader.Error]()
             sut.load { caprutedErrors.append($0) }
             
             client.complete(withStatusCode: code, at: index)
             XCTAssertEqual(caprutedErrors, [.invalidData])
         }
+    }
+    
+    func test_load_deliversErrorON200HTTPResponseWitInvalidaJSON() {
+        let (sut, client) = makeSUT()
+        
+        var caprutedErrors = [RemoteVideoLoader.Error]()
+        sut.load { caprutedErrors.append($0) }
+        
+        let invalidJSON = Data(bytes: "invalid json".utf8)
+        client.complete(withStatusCode: 200, data: invalidJSON)
+        XCTAssertEqual(caprutedErrors, [.invalidData])
+        
     }
     
     //MARK: - Helpers
@@ -85,9 +96,9 @@ class RemoteVideoLoaderTests: XCTestCase {
             messages[index].completion(.failure(error))
         }
         
-        func complete(withStatusCode code: Int = 0, at index: Int = 0) {
+        func complete(withStatusCode code: Int = 0, data: Data = Data(), at index: Int = 0) {
             let response = HTTPURLResponse(url: requestURLs[index], statusCode: code, httpVersion: nil, headerFields: nil)!
-            messages[index].completion(.success(response))
+            messages[index].completion(.success(data, response))
         }
     }
 }
