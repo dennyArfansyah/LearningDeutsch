@@ -20,12 +20,3 @@ public struct VideoItem: Equatable {
         self.imageURL = imageURL
     }
 }
-
-extension VideoItem: Decodable {
-    private enum CodingKeys: String, CodingKey {
-        case id
-        case description
-        case location
-        case imageURL = "image"
-    }
-}

@@ -40,7 +40,7 @@ public final class RemoteVideoLoader {
             switch result {
             case let .success(data, response):
                 if response.statusCode == 200, let root = try? JSONDecoder().decode(Root.self, from: data) {
-                    completion(.success(root.items))
+                    completion(.success(root.items.map { $0.item }))
                 } else {
                     completion(.failure(.invalidData))
                 }
@@ -52,5 +52,16 @@ public final class RemoteVideoLoader {
 }
 
 private struct Root: Decodable {
-    let items: [VideoItem]
+    let items: [Item]
+}
+
+private struct Item: Decodable {
+    let id: UUID
+    let description: String?
+    let location: String?
+    let image: URL
+    
+    var item: VideoItem {
+        return VideoItem(id: id, description: description, location: location, imageURL: image)
+    }
 }
