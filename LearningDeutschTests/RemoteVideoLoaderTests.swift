@@ -65,6 +65,18 @@ class RemoteVideoLoaderTests: XCTestCase {
         })
     }
     
+    func test_load_deliversNoItemsON200HTTPResponseWithEmptyJSONList() {
+        let (sut, client) = makeSUT()
+     
+        var caprutedResults = [RemoteVideoLoader.Result]()
+        sut.load { caprutedResults.append($0) }
+        
+        let emptyListJSON = Data(bytes: "{\"items\": []}".utf8)
+        client.complete(withStatusCode: 200, data: emptyListJSON)
+        
+        XCTAssertEqual(caprutedResults, [.success([])])
+    }
+    
     //MARK: - Helpers
     
     private func makeSUT(url: URL = URL(string: "http://a-url.com")!) -> (sut: RemoteVideoLoader, client: HTTPClientSpy) {
