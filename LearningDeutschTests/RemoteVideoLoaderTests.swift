@@ -47,11 +47,12 @@ class RemoteVideoLoaderTests: XCTestCase {
     func test_load_deliversErrorOnNon200HTTPResponse() {
         let (sut, client) = makeSUT()
         
-        let samples = [199, 200, 300, 400, 500]
+        let samples = [199, 201, 300, 400, 500]
+        
         samples.enumerated().forEach { index, code in
             expect(sut, toCompleteWithResult: .failure(.invalidData), when: {
-                let invalidJSON = Data(bytes: "invalid json".utf8)
-                client.complete(withStatusCode: code, at: index)
+                let json = makeItemsJSON([])
+                client.complete(withStatusCode: code, data: json, at: index)
             })
         }
     }
@@ -148,7 +149,7 @@ class RemoteVideoLoaderTests: XCTestCase {
             messages[index].completion(.failure(error))
         }
         
-        func complete(withStatusCode code: Int = 0, data: Data = Data(), at index: Int = 0) {
+        func complete(withStatusCode code: Int = 0, data: Data, at index: Int = 0) {
             let response = HTTPURLResponse(url: requestURLs[index], statusCode: code, httpVersion: nil, headerFields: nil)!
             messages[index].completion(.success(data, response))
         }
