@@ -96,11 +96,20 @@ class RemoteVideoLoaderTests: XCTestCase {
     
     //MARK: - Helpers
     
-    private func makeSUT(url: URL = URL(string: "http://a-url.com")!) -> (sut: RemoteVideoLoader, client: HTTPClientSpy) {
+    private func makeSUT(url: URL = URL(string: "http://a-url.com")!,
+                         file: StaticString = #filePath,
+                         line: UInt = #line) -> (sut: RemoteVideoLoader, client: HTTPClientSpy) {
         let client = HTTPClientSpy()
         let sut = RemoteVideoLoader(url: url, client: client)
-        
+        trackForMemoryLeaK(sut)
+        trackForMemoryLeaK(client)
         return (sut, client)
+    }
+    
+    private func trackForMemoryLeaK(_ instance: AnyObject, file: StaticString = #filePath, line: UInt = #line) {
+        addTeardownBlock { [weak instance] in
+            XCTAssertNil(instance, "instance should have been deallocated. Potential memory leak.", file: file, line: line)
+        }
     }
     
     private func makeItem(id: UUID, description: String? = nil, location: String? = nil, imageURL: URL) -> (model: VideoItem, json: [String: Any]) {
