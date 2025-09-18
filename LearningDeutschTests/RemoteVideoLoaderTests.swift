@@ -110,9 +110,7 @@ class RemoteVideoLoaderTests: XCTestCase {
             "description": description,
             "location": location,
             "image": imageURL.absoluteString
-        ].reduce(into: [String: Any]()) { (acc, e) in
-            if let value = e.value { acc[e.key] = value }
-        }
+        ].compactMapValues { $0 }
         
         return (item, json)
     }
