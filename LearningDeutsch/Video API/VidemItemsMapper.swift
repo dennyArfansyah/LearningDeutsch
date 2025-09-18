@@ -10,8 +10,12 @@ import Foundation
 final class VidemItemsMapper {
     private struct Root: Decodable {
         let items: [Item]
+        
+        var videos: [VideoItem] {
+            items.map { $0.item }
+        }
     }
-
+    
     private struct Item: Decodable {
         let id: UUID
         let description: String?
@@ -26,15 +30,14 @@ final class VidemItemsMapper {
         }
     }
     
-    
     private static var OK_200: Int { 200 }
     
-    static func map(_ data: Data, _ response: HTTPURLResponse) throws -> [VideoItem] {
-        guard response.statusCode == OK_200 else {
-            throw RemoteVideoLoader.Error.invalidData
+    static func map(_ data: Data, from response: HTTPURLResponse) -> RemoteVideoLoader.Result {
+        guard response.statusCode == OK_200,
+              let root = try? JSONDecoder().decode(Root.self, from: data) else {
+            return .failure(.invalidData)
         }
         
-        let root = try JSONDecoder().decode(Root.self, from: data)
-        return root.items.map { $0.item }
+        return .success(root.videos)
     }
 }

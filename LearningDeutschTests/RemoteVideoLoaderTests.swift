@@ -7,7 +7,6 @@
 
 import LearningDeutsch
 import XCTest
-import Testing
 
 class RemoteVideoLoaderTests: XCTestCase {
     
