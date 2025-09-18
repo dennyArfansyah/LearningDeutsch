@@ -98,13 +98,13 @@ class RemoteVideoLoaderTests: XCTestCase {
         let client = HTTPClientSpy()
         var sut: RemoteVideoLoader? = RemoteVideoLoader(url: url, client: client)
         
-        var caprutedResults = [RemoteVideoLoader.Result]()
-        sut?.load { caprutedResults.append($0) }
+        var capturedResults = [RemoteVideoLoader.Result]()
+        sut?.load { capturedResults.append($0) }
         
         sut = nil
         client.complete(withStatusCode: 200, data: makeItemsJSON([]))
                         
-        XCTAssertTrue(caprutedResults.isEmpty)
+        XCTAssertTrue(capturedResults.isEmpty)
     }
     
     //MARK: - Helpers
