@@ -1,5 +1,5 @@
 //
-//  VidemItemsMapper.swift
+//  VideoItemsMapper.swift
 //  LearningDeutsch
 //
 //  Created by Denny Arfansyah on 18/09/2025.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class VidemItemsMapper {
+final class VideoItemsMapper {
     private struct Root: Decodable {
         let items: [Item]
         

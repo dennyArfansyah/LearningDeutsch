@@ -30,7 +30,7 @@ public final class RemoteVideoLoader {
         client.get(from: url) { result in
             switch result {
             case let .success(data, response):
-                completion(VidemItemsMapper.map(data, from: response))
+                completion(VideoItemsMapper.map(data, from: response))
             case .failure:
                 completion(.failure(.connectivity))
             }
